@@ -1,0 +1,47 @@
+comparators:
+  # Tabular files (CSV, TSV etc.)
+  "*.csv":
+    type: tabular
+    tolerance: 1e-6
+    check_column_order: false
+
+  "*.tsv":
+    type: tabular
+    tolerance: 1e-6
+
+  # Images
+  "*.png":
+    type: image
+    method: pixel
+    tolerance: 0.01
+
+  "*.jpg":
+    type: image
+    method: pixel
+    tolerance: 0.01
+
+  # HDF5
+  "*.h5":
+    type: hdf5
+    tolerance: 1e-6
+
+  "*.hdf5":
+    type: hdf5
+    tolerance: 1e-6
+
+  # Bioinformatics
+  "*.fasta":
+    type: fasta
+
+  "*.fa":
+    type: fasta
+
+  "*.bam":
+    type: bam
+
+  "*.vcf":
+    type: vcf
+
+  # Fallback for anything else
+  "*.bin":
+    type: binary

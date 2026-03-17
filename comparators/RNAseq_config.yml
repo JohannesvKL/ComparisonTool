@@ -1,0 +1,13 @@
+exclude_extensions: 
+- ".pdf"
+- ".txt"
+- ".log"
+- ".out"
+- ".idxstats"
+- ".stats"
+- ".gtf"
+- ".xls"
+- ".ctab"
+- ".r"
+- ".bai"
+- ".html"

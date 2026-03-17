@@ -1,0 +1,13 @@
+comparators:
+  # Tabular files (CSV, TSV etc.)
+  "*.csv":
+    type: generic
+    user_comparison: "python3 /Users/johannes/Desktop/FU_Work/Code/generic_test.py"
+    override: True
+
+file_pairs:
+  - run1: "base.csv"
+    run2: "slightly_modified.csv"
+exclude: 
+  - "modified.csv"
+

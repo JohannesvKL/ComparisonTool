@@ -1,0 +1,56 @@
+# comparison_config.yaml
+
+comparisons:
+  # Tabular data
+  - pattern: "*.csv"
+    comparator: "tabular"
+    config:
+      abs_tol: 0.0001
+      rel_tol: 0.01
+      join_columns: ["sample_id"]
+  
+  - pattern: "results/*.tsv"
+    comparator: "tabular"
+    config:
+      abs_tol: 0.00001
+      rel_tol: 0.001
+      join_columns: ["gene_id", "condition"]
+  
+  # Images
+  - pattern: "plots/*.png"
+    comparator: "image"
+    config:
+      ssim_threshold: 0.95
+  
+  - pattern: "figures/*.jpg"
+    comparator: "image"
+    config:
+      ssim_threshold: 0.90
+  
+  # HDF5 files
+  - pattern: "*.h5"
+    comparator: "hdf5"
+    config:
+      rtol: 1e-6
+      atol: 1e-9
+  
+  # Binary (exact match)
+  - pattern: "*.bam"
+    comparator: "binary"
+  
+  - pattern: "*.pdf"
+    comparator: "binary"
+
+exclude_extensions: 
+- ".pdf"
+- ".txt"
+- ".log"
+- ".out"
+- ".idxstats"
+- ".stats"
+- ".gtf"
+- ".xls"
+- ".ctab"
+- ".r"
+- ".bai"
+- ".html"

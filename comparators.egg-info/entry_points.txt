@@ -1,0 +1,2 @@
+[console_scripts]
+compare = comparators.comparison_cli:compare

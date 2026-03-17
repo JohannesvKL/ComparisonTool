@@ -1,0 +1,6 @@
+file_pairs:
+  - run1: "run1/base.csv"
+    run2: "run2/slightly_modified.csv"
+exclude: 
+  - "run2/modified.csv"
+  - "ro-crate-metadata.json"
