@@ -7,7 +7,7 @@ There are a variety of different flags available to set for the tool.
 ## Options
 
 | Flag | Short | Required | Default | Description |
-|--------|-------|----------|---------|-------------|
+|----------|-------|----------|---------|-------------|
 | `--config` | `-c` | ✅ | — | Path to unified configuration YAML (comparators and file pairs). |
 | `--subdir` | `-s` | | `.` | Subdirectory within each run to scan for output files. |
 | `--output` | `-o` | | `comparison_result.json` / `comparison.crate.zip` | Path for the comparison result file. |
