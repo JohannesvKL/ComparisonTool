@@ -2,7 +2,7 @@ Some guidelines for using the tool are provided below.
 
 ## Flags
 
-There are a variety of different flags available to set for the tool. 
+There are a variety of different flags available to set for the tool, set them with '--' before the flag.
 
 ## Options
 
