@@ -20,17 +20,24 @@ There are a variety of different flags available to set for the tool, set them w
 
 ## Config 
 
-The config is divided into several sections. 
+## Config Structure
 
-The section marked comparators defines the comparison-types used for different file-patterns. 
-This is where tolerances for differences between the file pairs can be given, as well as your own comparison scripts provided. 
+The config is divided into several sections:
 
-There are three further sections dedicated towards selecting which files should be included/excluded from the comparison. 
+---
 
-file_pairs denotes files with different names between runs that should be matched together for the comparison. 
+**`comparators`**
+Defines the comparison types used for different file patterns. This is where tolerances for differences between file pairs can be given, as well as your own comparison scripts.
 
-exclude denotes files that should be ignored in the comparison, for example if there are configs/timestamps that are different between runs.  
+**`file_pairs`**
+Denotes files with different names between runs that should be matched together for the comparison.
 
-exclude_extensions denotes entire file-types that should be ignored in the comparison. This can include time-stamped file types or ones for which a reasonable comparison metric doesn't exist (yet). 
+**`exclude`**
+Denotes files that should be ignored in the comparison, for example configs or timestamps that differ between runs.
 
-Examples for these config files are available in comparators as yml files. 
+**`exclude_extensions`**
+Denotes entire file types that should be ignored in the comparison. This can include time-stamped file types or ones for which a reasonable comparison metric doesn't exist (yet).
+
+---
+
+Examples for these config files are available in `comparators` as `.yml` files.
