@@ -8,14 +8,14 @@ There are a variety of different flags available to set for the tool.
 
 | Flag | Short | Required | Default | Description |
 |-----------------|-------|----------|---------|-------------|
-| `--config` | `-c` | ✅ | — | Path to unified configuration YAML (comparators and file pairs). |
-| `--subdir` | `-s` | | `.` | Subdirectory within each run to scan for output files. |
-| `--output` | `-o` | | `comparison_result.json` / `comparison.crate.zip` | Path for the comparison result file. |
-| `--verbose` | `-v` | | `false` | Print per-file comparison results in addition to the summary. |
-| `--dry-run` | | | `false` | Resolve and list file pairs that would be compared, without running comparisons. |
-| `--crate` | | | `false` | Package the comparison result, config, and run references into an RO-Crate zip. |
-| `--include-files` | | | `false` | When using `--crate`, embed the run directories into the crate. Without this flag, runs are referenced as external URIs. |
-| `--custom` | | | `false` | Prioritize custom file handling. |
+| `config` | `-c` | ✅ | — | Path to unified configuration YAML (comparators and file pairs). |
+| `subdir` | `-s` | | `.` | Subdirectory within each run to scan for output files. |
+| `output` | `-o` | | `comparison_result.json` / `comparison.crate.zip` | Path for the comparison result file. |
+| `verbose` | `-v` | | `false` | Print per-file comparison results in addition to the summary. |
+| `dry-run` | | | `false` | Resolve and list file pairs that would be compared, without running comparisons. |
+| `crate` | | | `false` | Package the comparison result, config, and run references into an RO-Crate zip. |
+| `include-files` | | | `false` | When using `--crate`, embed the run directories into the crate. Without this flag, runs are referenced as external URIs. |
+| `custom` | | | `false` | Prioritize custom file handling. |
 
 
 ## Config 
