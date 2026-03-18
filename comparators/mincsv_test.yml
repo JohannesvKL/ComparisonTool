@@ -1,5 +1,0 @@
-file_pairs:
-  - run1: "base.csv"
-    run2: "slightly_modified.csv"
-exclude: 
-  - "modified.csv"
