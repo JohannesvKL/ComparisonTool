@@ -1,4 +1,4 @@
-import yaml
+from .config import load_config, relative_path
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Tuple
 
@@ -32,15 +32,18 @@ class OutputFileResolver:
         Returns a dict mapping relative path (from subdir) -> absolute path.
         Works with any plain directory, no RO-Crate required.
         """
+        relative_path(subdir, "Output subdirectory", allow_dot=True)
         output_files = {}
-        scan_path = Path(base_path) / subdir
+        scan_path = (Path(base_path) / subdir).resolve()
 
-        if not scan_path.exists():
-            return output_files
+        if not scan_path.is_dir():
+            raise FileNotFoundError(f"Output directory does not exist: {scan_path}")
 
-        for file_path in scan_path.rglob("*"):
+        for file_path in sorted(scan_path.rglob("*")):
+            if file_path.is_symlink():
+                raise ValueError(f"Outputs must be regular files/directories, not symlinks: {file_path.relative_to(scan_path)}")
             if file_path.is_file():
-                relative = str(file_path.relative_to(scan_path))
+                relative = file_path.relative_to(scan_path).as_posix()
                 output_files[relative] = str(file_path)
 
         return output_files
@@ -108,8 +111,7 @@ class OutputFileResolver:
           - list of path exclusion patterns
           - list of normalised extension exclusions (each starts with '.')
         """
-        with open(config_path, 'r') as f:
-            config = yaml.safe_load(f)
+        config = load_config(config_path)
 
         pairs = {}
         for pair in config.get('file_pairs', []):
@@ -125,7 +127,7 @@ class OutputFileResolver:
         return pairs, excludes, exclude_extensions
 
     @staticmethod
-    def _is_excluded(path: str, excludes: List[str], exclude_extensions: List[str] = []) -> bool:
+    def _is_excluded(path: str, excludes: List[str], exclude_extensions: List[str] = None) -> bool:
         """
         Return True if a relative path matches any exclusion rule.
 
@@ -192,7 +194,7 @@ class OutputFileResolver:
                 covered2.add(rel2)
 
         # Auto-match remaining files by name, skipping excluded paths
-        for name in set(files1.keys()) & set(files2.keys()):
+        for name in sorted(set(files1.keys()) & set(files2.keys())):
             if name not in covered1 and name not in covered2:
                 if not self._is_excluded(name, excludes, exclude_extensions):
                     resolved.append((name, files1[name], files2[name]))

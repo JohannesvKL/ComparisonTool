@@ -67,7 +67,7 @@ class WorkflowRunComparator:
         all_pass = True
 
         for label, file1_path, file2_path in pairs:
-            result = self.manager.compare_files(file1_path, file2_path)
+            result = self.manager.compare_files(file1_path, file2_path, lookup_path=label)
             comparator = self.manager.get_comparator(label)
 
             action_entity = self._add_comparison_to_crate(
@@ -86,7 +86,7 @@ class WorkflowRunComparator:
 
         # Build summary
         summary = {
-            'overall_match': all_pass and len(only_in_run1) == 0 and len(only_in_run2) == 0,
+            'overall_match': bool(pairs) and all_pass and len(only_in_run1) == 0 and len(only_in_run2) == 0,
             'files_compared': len(pairs),
             'files_matching': sum(1 for r in comparison_results if r['result']['match']),
             'files_differing': sum(1 for r in comparison_results if not r['result']['match']),

@@ -8,7 +8,7 @@ class TabularComparator(FileComparator):
     """DataComPy-based tabular comparison"""
     
     def can_compare(self, file_path: str) -> bool:
-        return file_path.endswith(('.csv', '.tsv', '.xlsx'))
+        return file_path.lower().endswith(('.csv', '.tsv', '.xlsx', '.parquet'))
     
     def compare(self, file1: str, file2: str, config: Dict) -> Dict[str, Any]:
         
@@ -16,15 +16,30 @@ class TabularComparator(FileComparator):
         comment_char = config.get('comment', None)
         skiprows = config.get('skiprows', None)
 
-        # Load based on file type
-        if file1.endswith('.xlsx'):
-            df1 = pd.read_excel(file1)
-            df2 = pd.read_excel(file2)
-        else:
-            sep = '\t' if file1.endswith('.tsv') else ','
-            df1 = pd.read_csv(file1, sep=sep, comment=comment_char, skiprows=skiprows)
-            df2 = pd.read_csv(file2, sep=sep, comment=comment_char, skiprows=skiprows)
+        def read(path):
+            lower = path.lower()
+            if lower.endswith('.parquet'):
+                if comment_char is not None or 'skiprows' in config:
+                    raise ValueError('comment/skiprows are unsupported for Parquet.')
+                return pd.read_parquet(path)
+            if lower.endswith('.xlsx'):
+                if comment_char is not None:
+                    raise ValueError('comment is unsupported for Excel.')
+                return pd.read_excel(path, skiprows=skiprows)
+            if not lower.endswith(('.csv', '.tsv')):
+                raise ValueError(f'Unsupported table format: {path}')
+            return pd.read_csv(path, sep='\t' if lower.endswith('.tsv') else ',',
+                               comment=comment_char, skiprows=skiprows)
+
+        df1, df2 = read(file1), read(file2)
         
+        required = config.get('required_columns', [])
+        missing1, missing2 = sorted(set(required) - set(df1.columns)), sorted(set(required) - set(df2.columns))
+        if missing1 or missing2:
+            return {'match': False, 'verdict': 'FAIL', 'method': 'datacompy',
+                    'reason': f'Required columns missing: run1={missing1}, run2={missing2}',
+                    'configuration': config}
+
         # Get configuration
         join_columns = config.get('join_columns', [df1.columns[0]])
         abs_tol = float(config.get('abs_tol', 1e-5))
@@ -86,7 +101,8 @@ class TabularComparator(FileComparator):
                 'abs_tol': abs_tol,
                 'rel_tol': rel_tol,
                 'comment': comment_char,
-                'skiprows': skiprows
+                'skiprows': skiprows,
+                'required_columns': required
             },
             'summary': {
                 'rows_in_common': rows_in_common,
