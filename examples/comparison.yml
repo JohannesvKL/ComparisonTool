@@ -1,0 +1,9 @@
+comparators:
+  "*.tsv":
+    type: tabular
+    join_columns: [gene]
+    abs_tol: 0.0001
+    rel_tol: 0.0
+exclude: [.DS_Store]
+exclude_extensions: [log]
+file_pairs: []
